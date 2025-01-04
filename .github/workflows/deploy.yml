@@ -22,11 +22,9 @@ jobs:
           cd /root/test-app || exit
           git pull origin main
           npm install
-          npm run build
           npm start || {
             echo "Deployment failed, rolling back to previous version"
             git reflog | grep HEAD@{1} | awk '{print $1}' | xargs git reset --hard
             npm install
-            npm run build
             npm start
           }
