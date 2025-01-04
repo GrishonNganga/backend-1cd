@@ -20,7 +20,13 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
         script: |
           cd /root/test-app || exit
+
+          # Checck if there are uncommited changes and stash them
+          git diff --quiet || git stash --include-untracked
+
+          # Pull the latest changes from the main branch
           git pull origin main
+          
           npm install
           npm start || {
             echo "Deployment failed, rolling back to previous version"
