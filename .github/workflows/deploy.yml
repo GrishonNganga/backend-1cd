@@ -19,7 +19,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
         script: |
-          cd /root/test-app
+          cd /root/test-app || exit
           git pull origin main
           npm install
           npm run build
