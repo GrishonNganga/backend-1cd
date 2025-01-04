@@ -1,0 +1,32 @@
+name: Deploy Node.js app to Production
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Ssh to server and deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        script: |
+          cd /root/test-app
+          git pull origin main
+          npm install
+          npm run build
+          npm start || {
+            echo "Deployment failed, rolling back to previous version"
+            git reflog | grep HEAD@{1} | awk '{print $1}' | xargs git reset --hard
+            npm install
+            npm run build
+            npm start
+          }
