@@ -29,9 +29,13 @@ jobs:
           git pull origin main
 
           npm install
-          npm start || {
+          pm2 restart test-app || pm2 start ./src/index.js --name test-app
+          if [ $? -eq 0 ]; then
+            echo "Deployment successful"
+          else
             echo "Deployment failed, rolling back to previous version"
             git reflog | grep HEAD@{1} | awk '{print $1}' | xargs git reset --hard
             npm install
             npm start
+            exit 1
           }
