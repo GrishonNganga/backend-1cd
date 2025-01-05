@@ -4,7 +4,7 @@ const app = express();
 
 // Define a route for the root path ("/")
 app.get('/', (req, res) => {
-  res.send('Hello World from 1cd again!');
+  res.send('Hello World from 1cd!');
 });
 
 // Start the server
