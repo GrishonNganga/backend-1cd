@@ -30,7 +30,8 @@ jobs:
 
           npm install
           npm i -g pm2
-          pm2 restart test-app || pm2 start ./src/index.js --name test-app
+          pm2 update
+          pm2 restart test-app || pm2 start index.js --name test-app
           if [ $? -eq 0 ]; then
             echo "Deployment successful"
           else
